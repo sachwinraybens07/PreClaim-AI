@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import router from "./routes";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
+import { ensureDemoUser } from "./services/authService";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -17,6 +18,14 @@ app.use("/api", router);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`PreClaim AI backend listening on http://localhost:${PORT}`);
+async function start() {
+  await ensureDemoUser();
+  app.listen(PORT, () => {
+    console.log(`PreClaim AI backend listening on http://localhost:${PORT}`);
+  });
+}
+
+start().catch((err) => {
+  console.error("Failed to initialize server:", err);
+  process.exit(1);
 });
