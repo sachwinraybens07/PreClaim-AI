@@ -85,11 +85,28 @@ export interface LoginPayload {
   demo?: boolean;
 }
 
+export interface SignupPayload {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export const authApi = {
   login: (payload: LoginPayload) =>
     request<{ token: string; user: AuthUser }>("/auth/login", {
       method: "POST",
       body: JSON.stringify(payload),
+    }),
+  signup: (payload: SignupPayload) =>
+    request<{ token: string; user: AuthUser }>("/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  google: (idToken: string) =>
+    request<{ token: string; user: AuthUser }>("/auth/google", {
+      method: "POST",
+      body: JSON.stringify({ idToken }),
     }),
 };
 

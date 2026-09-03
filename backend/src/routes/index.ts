@@ -12,6 +12,8 @@ import * as denialController from "../controllers/denialController";
 const router = Router();
 
 router.post("/auth/login", asyncHandler(authController.login));
+router.post("/auth/signup", asyncHandler(authController.signup));
+router.post("/auth/google", asyncHandler(authController.google));
 
 router.use(requireAuth);
 

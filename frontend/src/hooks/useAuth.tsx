@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { authApi, clearToken, getToken, setToken, type LoginPayload } from "../services/api";
+import { authApi, clearToken, getToken, setToken, type LoginPayload, type SignupPayload } from "../services/api";
 import type { AuthUser } from "../types";
 
 interface AuthContextValue {
@@ -7,6 +7,8 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (payload: LoginPayload) => Promise<void>;
+  register: (payload: SignupPayload) => Promise<void>;
+  loginWithGoogle: (idToken: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -31,11 +33,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const login = async (payload: LoginPayload) => {
-    const result = await authApi.login(payload);
+  const applyAuthResult = (result: { token: string; user: AuthUser }) => {
     setToken(result.token);
     localStorage.setItem(USER_KEY, JSON.stringify(result.user));
     setUser(result.user);
+  };
+
+  const login = async (payload: LoginPayload) => {
+    applyAuthResult(await authApi.login(payload));
+  };
+
+  const register = async (payload: SignupPayload) => {
+    applyAuthResult(await authApi.signup(payload));
+  };
+
+  const loginWithGoogle = async (idToken: string) => {
+    applyAuthResult(await authApi.google(idToken));
   };
 
   const logout = () => {
@@ -45,7 +58,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, isLoading, login, register, loginWithGoogle, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
