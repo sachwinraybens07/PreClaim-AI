@@ -148,6 +148,16 @@ Click **Enter Demo** on the login screen (creates/reuses a fixed demo user, Sara
 
 - Email: `sarah.chen@preclaim.ai`
 - Password: `demo1234`
+- 
+## Deployment
+
+PreClaim AI is deployed using a separate frontend and backend.
+
+- **Live Application:** https://pre-claim-ai.vercel.app
+- **Backend API:** https://preclaim-ai.onrender.com
+- **GitHub Repository:** https://github.com/chandilyanr-star/PreClaim-AI
+
+The production frontend communicates with the deployed backend API on Render.
 
 ## AI configuration
 
