@@ -112,9 +112,23 @@ export function WhatIfSimulator({ caseId, documents, currentRisk }: { caseId: st
                 <CartesianGrid vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} interval={0} angle={-10} textAnchor="end" height={60} />
                 <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 13 }} formatter={(v: number) => [`${v}%`, "Risk"]} />
+                <Tooltip
+                  contentStyle={{ borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 13 }}
+                  formatter={(value: unknown) => {
+                    const num = Array.isArray(value) ? Number(value[0]) : Number(value);
+                    return [Number.isFinite(num) ? `${num}%` : "—", "Risk"];
+                  }}
+                />
                 <Bar dataKey="risk" radius={[6, 6, 0, 0]} fill="#4361ee" animationDuration={800}>
-                  <LabelList dataKey="risk" position="top" formatter={(v: number) => `${v}%`} className="text-xs font-semibold" />
+                  <LabelList
+                    dataKey="risk"
+                    position="top"
+                    formatter={(label: unknown) => {
+                      const num = Number(label);
+                      return Number.isFinite(num) ? `${num}%` : "";
+                    }}
+                    className="text-xs font-semibold"
+                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>

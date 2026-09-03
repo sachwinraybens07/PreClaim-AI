@@ -12,7 +12,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Toolti
 import { AppLayout } from "../components/layout/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
-import { RiskBadge, StatusBadge } from "../components/ui/Badge";
+import { RiskBadge } from "../components/ui/Badge";
 import { SkeletonCard } from "../components/ui/Skeleton";
 import { ErrorState, EmptyState } from "../components/ui/EmptyState";
 import { dashboardApi } from "../services/api";

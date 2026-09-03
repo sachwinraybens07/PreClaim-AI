@@ -103,7 +103,13 @@ export default function DenialIntelligence() {
                     <CartesianGrid horizontal={false} stroke="#f1f5f9" />
                     <XAxis type="number" tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} unit="%" />
                     <YAxis dataKey="reason" type="category" width={160} tick={{ fontSize: 12, fill: "#334155" }} axisLine={false} tickLine={false} />
-                    <Tooltip contentStyle={{ borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 13 }} formatter={(v: number) => [`${v}%`, "Share"]} />
+                    <Tooltip
+                      contentStyle={{ borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 13 }}
+                      formatter={(value: unknown) => {
+                        const num = Array.isArray(value) ? Number(value[0]) : Number(value);
+                        return [Number.isFinite(num) ? `${num}%` : "—", "Share"];
+                      }}
+                    />
                     <Bar dataKey="percentage" radius={[0, 6, 6, 0]}>
                       {data.topDenialReasons.map((_, i) => (
                         <Cell key={i} fill={COLORS[i % COLORS.length]} />
