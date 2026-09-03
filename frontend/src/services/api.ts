@@ -13,6 +13,18 @@ import type {
 
 const TOKEN_KEY = "preclaim_token";
 
+/**
+ * Base URL for API requests.
+ *
+ * - If VITE_API_URL is set (e.g. in production, pointing at the deployed
+ *   backend), requests go to `${VITE_API_URL}/api`.
+ * - If it's unset (local development), requests fall back to the relative
+ *   `/api` path, which Vite's dev server proxies to localhost:4000
+ *   (see vite.config.ts).
+ */
+const RAW_API_BASE_URL = import.meta.env.VITE_API_URL?.trim();
+const API_BASE_URL = RAW_API_BASE_URL ? `${RAW_API_BASE_URL.replace(/\/+$/, "")}/api` : "/api";
+
 export class ApiError extends Error {
   status: number;
   constructor(status: number, message: string) {
@@ -43,7 +55,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   let res: Response;
   try {
-    res = await fetch(`/api${path}`, { ...options, headers });
+    res = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
   } catch {
     throw new ApiError(0, "Unable to reach the server. Please check your connection and try again.");
   }
