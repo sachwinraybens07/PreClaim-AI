@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  passwordHash   String
+  role           String   @default("RCM_STAFF")
+  createdAt      DateTime @default(now())
+  copilotMessages CopilotMessage[]
+}
+
+model Patient {
+  id               String   @id @default(cuid())
+  name             String
+  patientIdentifier String
+  dateOfBirth      String
+  createdAt        DateTime @default(now())
+  insurances       Insurance[]
+  cases            Case[]
+}
+
+model Insurance {
+  id        String   @id @default(cuid())
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  payer     String
+  planName  String
+  memberId  String
+  cases     Case[]
+}
+
+model Case {
+  id               String   @id @default(cuid())
+  caseNumber       String   @unique
+  patientId        String
+  patient          Patient  @relation(fields: [patientId], references: [id])
+  insuranceId      String
+  insurance        Insurance @relation(fields: [insuranceId], references: [id])
+  diagnosis        String
+  diagnosisCode    String
+  procedure        String
+  procedureCode    String
+  provider         String
+  urgency          String   @default("STANDARD")
+  status           String   @default("NEW")
+  riskScore        Int      @default(0)
+  riskLevel        String   @default("UNKNOWN")
+  confidence       Int      @default(0)
+  predictedOutcome String?
+  readiness        Int      @default(0)
+  treatmentDate    String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  documents    Document[]
+  riskFactors  RiskFactor[]
+  actions      Action[]
+  simulations  Simulation[]
+  copilotMessages CopilotMessage[]
+}
+
+model Document {
+  id           String   @id @default(cuid())
+  caseId       String
+  case         Case     @relation(fields: [caseId], references: [id])
+  name         String
+  type         String
+  status       String   @default("MISSING")
+  required     Boolean  @default(true)
+  priority     String   @default("MEDIUM")
+  source       String?
+  instructions String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model RiskFactor {
+  id          String   @id @default(cuid())
+  caseId      String
+  case        Case     @relation(fields: [caseId], references: [id])
+  title       String
+  description String
+  severity    String
+  impact      String
+  evidence    String?
+  action      String?
+  createdAt   DateTime @default(now())
+}
+
+model Action {
+  id             String   @id @default(cuid())
+  caseId         String
+  case           Case     @relation(fields: [caseId], references: [id])
+  title          String
+  description    String
+  priority       String
+  status         String   @default("PENDING")
+  estimatedImpact String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Simulation {
+  id             String   @id @default(cuid())
+  caseId         String
+  case           Case     @relation(fields: [caseId], references: [id])
+  selectedActions String
+  predictedRisk  Int
+  riskReduction  Int
+  createdAt      DateTime @default(now())
+}
+
+model DenialRecord {
+  id        String   @id @default(cuid())
+  payer     String
+  procedure String
+  diagnosis String
+  reason    String
+  outcome   String
+  date      DateTime
+}
+
+model CopilotMessage {
+  id        String   @id @default(cuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id])
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+}
