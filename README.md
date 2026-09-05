@@ -318,6 +318,10 @@ The current risk model is a transparent, deterministic rules engine (not a train
 **Current scope note:** this is a hackathon build using synthetic demo data only — no real patient information is stored or processed. Predictions are decision support and are explicitly labeled as estimates that do not replace payer verification; this is not a HIPAA-compliant production system.
 
 ## 👥 Team
+Sachwin Raybens S - DEVOLOPER (BOTH FRONT AND BACKEND)-sachwinraybens07
+Sanjith SR - DEBUGER - 
+Chandilyan R - DEBUGER - chandilyanr-star
+Akileasshh KPB - PRESENTER - 
 
 Team information was not present in the original project README. Add your team's names/roles here.
 
