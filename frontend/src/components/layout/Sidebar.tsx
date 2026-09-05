@@ -22,7 +22,7 @@ const NAV_GROUPS = [
   },
   {
     label: "Intelligence",
-    items: [{ to: "/copilot", label: "AI Copilot", icon: Sparkles }],
+    items: [{ to: "/copilot", label: "Pre-Submission Copilot", icon: Sparkles }],
   },
 ];
 
