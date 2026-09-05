@@ -15,14 +15,20 @@ export function Badge({ className, ...props }: HTMLAttributes<HTMLSpanElement>) 
   );
 }
 
-export function RiskBadge({ level, size = "md" }: { level: RiskLevel; size?: "sm" | "md" }) {
+export function RiskBadge({ level, size = "md", score }: { level: RiskLevel; size?: "sm" | "md"; score?: number }) {
   const meta = RISK_META[level];
-  const Icon = meta.icon;
   return (
-    <Badge className={cn(meta.bg, meta.color, "border", meta.border, size === "sm" && "px-1.5 py-0.5 text-[11px]")}>
-      <Icon className={cn("shrink-0", size === "sm" ? "h-3 w-3" : "h-3.5 w-3.5")} />
-      {meta.label}
-    </Badge>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 font-semibold",
+        size === "sm" ? "text-xs" : "text-sm",
+        meta.color
+      )}
+    >
+      <span className={cn("inline-block shrink-0 rounded-full", meta.dot, size === "sm" ? "h-1.5 w-1.5" : "h-2 w-2")} />
+      {typeof score === "number" && <span className="text-figure font-bold">{score}%</span>}
+      <span className={size === "sm" ? "" : "tracking-tight"}>{meta.label}</span>
+    </span>
   );
 }
 

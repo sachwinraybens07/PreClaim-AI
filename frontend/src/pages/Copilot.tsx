@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { AppLayout } from "../components/layout/AppLayout";
-import { Card, CardContent } from "../components/ui/Card";
 import { RiskBadge } from "../components/ui/Badge";
 import { SkeletonCard } from "../components/ui/Skeleton";
 import { ErrorState, EmptyState } from "../components/ui/EmptyState";
 import { CopilotPanel } from "../features/case/CopilotPanel";
 import { casesApi, ApiError } from "../services/api";
 import type { CaseListItem } from "../types";
+import { cn } from "../utils/cn";
 import { FolderKanban } from "lucide-react";
 
 export default function Copilot() {
@@ -39,16 +39,17 @@ export default function Copilot() {
       )}
 
       {!loading && !error && cases && cases.length > 0 && (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <Card className="lg:col-span-1">
-            <CardContent className="max-h-[560px] space-y-1.5 overflow-y-auto p-3">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <div className="overflow-hidden rounded-lg border border-slate-200 bg-white lg:col-span-1">
+            <div className="max-h-[560px] space-y-1 overflow-y-auto p-2.5">
               {cases.map((c) => (
                 <button
                   key={c.id}
                   onClick={() => setSelectedId(c.id)}
-                  className={`focus-ring flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm ${
+                  className={cn(
+                    "focus-ring flex w-full items-center justify-between gap-2 rounded-md px-3 py-2.5 text-left text-sm transition-colors",
                     selectedId === c.id ? "bg-brand-50 text-brand-800" : "hover:bg-slate-50"
-                  }`}
+                  )}
                 >
                   <div className="min-w-0">
                     <p className="truncate font-semibold">{c.patientName}</p>
@@ -59,10 +60,16 @@ export default function Copilot() {
                   <RiskBadge level={c.riskLevel} size="sm" />
                 </button>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <div className="lg:col-span-2">{selectedId && <CopilotPanel caseId={selectedId} />}</div>
+          <div className="lg:col-span-2">
+            {selectedId && (
+              <div className="h-[560px] overflow-hidden rounded-lg border border-slate-200 bg-white">
+                <CopilotPanel caseId={selectedId} embedded />
+              </div>
+            )}
+          </div>
         </div>
       )}
     </AppLayout>

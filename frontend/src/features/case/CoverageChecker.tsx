@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ShieldQuestion } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/Card";
+import { SectionHeader } from "../../components/ui/SectionHeader";
 import { Badge } from "../../components/ui/Badge";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { ErrorState } from "../../components/ui/EmptyState";
@@ -8,13 +8,13 @@ import { casesApi, ApiError } from "../../services/api";
 import type { CoverageResult } from "../../types";
 
 const STATUS_CLASS: Record<string, string> = {
-  "Appears Covered": "bg-green-50 text-green-700",
-  "Potentially Covered": "bg-yellow-50 text-yellow-700",
+  "Appears Covered": "bg-emerald-50 text-emerald-700",
+  "Potentially Covered": "bg-amber-50 text-amber-700",
   "Requires Verification": "bg-orange-50 text-orange-700",
   "Not Typically Required": "bg-slate-100 text-slate-600",
   "Likely Required": "bg-orange-50 text-orange-700",
-  Initiated: "bg-green-50 text-green-700",
-  Documented: "bg-green-50 text-green-700",
+  Initiated: "bg-emerald-50 text-emerald-700",
+  Documented: "bg-emerald-50 text-emerald-700",
   "Verification Required": "bg-orange-50 text-orange-700",
 };
 
@@ -36,12 +36,9 @@ export function CoverageChecker({ caseId }: { caseId: string }) {
   useEffect(load, [caseId]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Coverage & Claimability</CardTitle>
-        <ShieldQuestion className="h-4 w-4 text-slate-400" />
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="rounded-lg border border-slate-200 bg-white p-5">
+      <SectionHeader title="Coverage & Claimability" action={<ShieldQuestion className="h-4 w-4 text-slate-400" />} className="mb-4" />
+      <div className="space-y-3">
         {loading && (
           <div className="space-y-2">
             <Skeleton className="h-5 w-full" />
@@ -60,8 +57,8 @@ export function CoverageChecker({ caseId }: { caseId: string }) {
             <p className="pt-1 text-xs italic text-slate-400">{data.disclaimer}</p>
           </>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 

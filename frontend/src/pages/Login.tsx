@@ -120,19 +120,19 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-10">
+    <div className="flex min-h-screen items-center justify-center bg-navy-950 px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500 text-white shadow-sm">
-            <ShieldCheck className="h-6 w-6" />
+          <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md bg-brand-500 text-white">
+            <ShieldCheck className="h-5.5 w-5.5" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">PreClaim AI</h1>
-          <p className="mt-1.5 text-sm font-medium text-slate-500">
-            Prevent insurance denials before they happen.
+          <h1 className="text-2xl font-bold text-white">PreClaim AI</h1>
+          <p className="mt-1.5 text-sm font-medium text-navy-300">
+            Predict and prevent insurance denials before submission.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-card">
+        <div className="rounded-lg border border-slate-200 bg-white p-7 shadow-panel">
           <form onSubmit={mode === "signin" ? handleLogin : handleSignup} className="space-y-4" noValidate>
             {mode === "signup" && (
               <div>
@@ -262,7 +262,7 @@ export default function Login() {
           </p>
         </div>
 
-        <p className="mt-6 text-center text-xs text-slate-400">
+        <p className="mt-6 text-center text-xs text-navy-400">
           Synthetic demo data only. No real patient information is used.
         </p>
       </div>

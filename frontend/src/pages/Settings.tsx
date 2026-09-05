@@ -27,16 +27,14 @@ export default function Settings() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>About PreClaim AI</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm text-slate-500">
+        <div className="rounded-lg bg-slate-100/60 p-5">
+          <p className="mb-2 text-2xs font-semibold uppercase tracking-wide text-slate-400">About PreClaim AI</p>
+          <div className="space-y-2 text-sm text-slate-500">
             <p>PreClaim AI is a decision-support tool for revenue cycle teams. Predictions are estimates based on
-              available case data and historical patterns — they do not replace payer verification.</p>
+              available case data and configured payer/documentation rules — they do not replace payer verification.</p>
             <p>This build uses synthetic demo data only. No real patient information is stored or processed.</p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );

@@ -1,7 +1,6 @@
-import { CheckCircle2, FileText } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/Card";
+import { CheckCircle2, Clock, FileWarning } from "lucide-react";
+import { SectionHeader } from "../../components/ui/SectionHeader";
 import { Button } from "../../components/ui/Button";
-import { ProgressBar } from "../../components/ui/ProgressBar";
 import { PriorityBadge } from "../../components/ui/Badge";
 import { cn } from "../../utils/cn";
 import type { DocumentItem } from "../../types";
@@ -20,60 +19,65 @@ export function DocumentChecklist({
   const readiness = required.length ? Math.round((available.length / required.length) * 100) : 100;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Documentation Readiness</CardTitle>
-        <span className="text-sm font-bold text-slate-700">
-          {available.length}/{required.length} documents available
-        </span>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <ProgressBar value={readiness} barClassName={readiness === 100 ? "bg-green-600" : "bg-brand-500"} />
-
-        <div className="space-y-3">
-          {required.map((doc) => {
-            const complete = doc.status === "AVAILABLE";
-            return (
+    <section>
+      <SectionHeader
+        title="Document Readiness"
+        description="What's on file for this claim, and what still needs to be obtained."
+        action={
+          <div className="flex items-center gap-2.5">
+            <div className="h-1.5 w-24 overflow-hidden rounded-full bg-slate-200">
               <div
-                key={doc.id}
-                className={cn(
-                  "flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between",
-                  complete ? "border-green-200 bg-green-50/40" : "border-slate-200"
-                )}
-              >
-                <div className="flex items-start gap-3">
-                  {complete ? (
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
-                  ) : (
-                    <FileText className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
-                  )}
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-800">{doc.name}</span>
-                      {!complete && <PriorityBadge priority={doc.priority} />}
-                    </div>
-                    {!complete && doc.instructions && (
-                      <div className="mt-1.5 space-y-0.5 text-xs text-slate-500">
-                        <p>
-                          <span className="font-medium text-slate-600">Why needed: </span>
-                          {doc.instructions}
-                        </p>
-                        {doc.source && (
-                          <p>
-                            <span className="font-medium text-slate-600">Provided by: </span>
-                            {doc.source}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                    {complete && <p className="mt-1 text-xs font-medium text-green-700">Complete</p>}
-                  </div>
+                className={cn("h-full rounded-full transition-all duration-700 ease-out", readiness === 100 ? "bg-emerald-500" : "bg-brand-500")}
+                style={{ width: `${readiness}%` }}
+              />
+            </div>
+            <span className="text-figure text-sm font-bold text-slate-700">
+              {available.length}/{required.length}
+            </span>
+          </div>
+        }
+        className="mb-3"
+      />
+
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+        {required.map((doc) => {
+          const complete = doc.status === "AVAILABLE";
+          const pendingReview = doc.status === "PENDING_REVIEW";
+          return (
+            <div
+              key={doc.id}
+              className={cn(
+                "flex items-start gap-3 rounded-md border p-3.5",
+                complete && "border-emerald-200 bg-emerald-50/30",
+                pendingReview && "border-amber-200 bg-amber-50/30",
+                !complete && !pendingReview && "border-slate-200 bg-white"
+              )}
+            >
+              {complete ? (
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+              ) : pendingReview ? (
+                <Clock className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+              ) : (
+                <FileWarning className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-semibold text-slate-800">{doc.name}</span>
+                  {!complete && !pendingReview && <PriorityBadge priority={doc.priority} />}
                 </div>
-                {!complete && (
+                {complete && <p className="mt-0.5 text-xs font-medium text-emerald-700">Verified</p>}
+                {pendingReview && <p className="mt-0.5 text-xs font-medium text-amber-700">Processing — awaiting review</p>}
+                {!complete && !pendingReview && doc.instructions && (
+                  <p className="mt-1 text-xs text-slate-500">
+                    {doc.instructions}
+                    {doc.source && <span className="text-slate-400"> — via {doc.source}</span>}
+                  </p>
+                )}
+                {!complete && !pendingReview && (
                   <Button
                     size="sm"
                     variant="outline"
-                    className="shrink-0"
+                    className="mt-2.5"
                     onClick={() => onMarkObtained(doc)}
                     isLoading={pendingId === doc.id}
                   >
@@ -82,10 +86,10 @@ export function DocumentChecklist({
                   </Button>
                 )}
               </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
