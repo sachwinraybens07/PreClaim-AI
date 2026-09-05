@@ -8,7 +8,7 @@ AI-powered decision support for healthcare revenue cycle teams that predicts ins
 
 The frontend above talks to the deployed backend at `https://preclaim-ai.onrender.com`. No local setup is required to try it.
 
-**GitHub repository:** [https://github.com/chandilyanr-star/PreClaim-AI](https://github.com/chandilyanr-star/PreClaim-AI)
+**GitHub repository:** [https://github.com/sachwinraybens07/PreClaim-AI](https://github.com/sachwinraybens07/PreClaim-AI)
 
 > Backend note: the API is hosted on Render's free tier, which spins down when idle. The first request after a period of inactivity may take up to ~50 seconds to wake the server.
 
