@@ -4,7 +4,7 @@ AI-powered decision support for healthcare revenue cycle teams that predicts ins
 
 ## 🚀 Live Demo
 
-**Live application:** **[https://pre-claim-ai.vercel.app](https://pre-claim-ai.vercel.app)**
+**Live application:** **[https://pre-claim-ai-delta.vercel.app](https://pre-claim-ai-delta.vercel.app/)**
 
 The frontend above talks to the deployed backend at `https://preclaim-ai.onrender.com`. No local setup is required to try it.
 
